@@ -1,81 +1,34 @@
-// const productId = getProductId();
+function displayCart () {
+    let alreadyInCart = localStorage.getItem('productsInCart');
+    alreadyInCart = JSON.parse(alreadyInCart);
+    let productContainer = document.getElementById('cart__items');
 
-// const productColor = getProductColor();
-
-// const productQuantity = getProductQuantity();
-// console.log(productQuantity);
-
-// fetch('http://localhost:3000/api/products/' + productId)
-//     .then(data => data.json())
-//     .then(jsonProduct => {
-//         // Collecting title, price and description
-//         document.getElementById('title').textContent = jsonProduct.name;
-//         document.getElementById('price').textContent = jsonProduct.price;
-//         document.getElementById('description').textContent = jsonProduct.description;
-        
-        
-//         // For selecting color 
-//         const colorsSelect = jsonProduct.colors;
-        
-//         for (const color of colorsSelect) {
-//             document.getElementById('colors').innerHTML += `<option value="${color.toLowerCase()}">${color}</option>`;                                     
-//         }
-        
-//         // Collecting images from API
-//         const productImageUrl = jsonProduct.imageUrl;
-//         const productImageAlt = jsonProduct.altTxt;
-//         document.querySelector('.item__img').innerHTML = `<img src="${productImageUrl}" alt="${productImageAlt}">`;
- 
-//         // Adding products to cart + eventListener action on click
-//         const addToCart = document.getElementById("addToCart");
-//         addToCart.addEventListener('click', (event) => { 
-//             cartNumbers();
-//             event.preventDefault();
-        
-//         // Create a function to add products in localstorage
-
-//         function cartNumbers(cartNumbers) {
-//             let productNumbers = localStorage.getItem('cartNumbers');
-//             productNumbers = parseInt(productNumbers);
-            
-//             if (productNumbers) {
-//                 localStorage.setItem('cartNumbers', productNumbers + parseInt(productQuantity));
-//             } else {
-//                 localStorage.setItem('cartNumbers', parseInt(productQuantity));
-//             }
-//         }
-
-//         // Array creation for Local storage
-//         const productArray = [
-//             {
-//                 id: productId,
-//                 quantity : parseInt(productQuantity),
-//                 color : productColor
-//             }
-//         ];
-//         console.log(productArray);
-//         })
-
-        
-//     });
-
-// // Get product ID with searchparams
-// function getProductId() {
-//     return new URL(window.location.href).searchParams.get('id');
-// }
-
-// // Get color value to the DOM
-// function getProductColor() {
-//     const colorValue = document.getElementById('colors');
-//     const colorOptions = colorValue.value;
-//     console.log(colorOptions);
-// }
-
-// // Get quantity value to the DOM
-// function getProductQuantity() {
-//     const quantity = document.getElementById('quantity');
-//     const quantityValue = quantity.value;
-//     console.log(quantityValue);
-// }
-
-
+    if (alreadyInCart && productContainer) {
+        productContainer.innerHTML = ``;
+        Object.values(alreadyInCart).map(product => {
+            productContainer.innerHTML += `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
+                                                <div class="cart__item__img">
+                                                <img src="" alt="">
+                                                </div>
+                                                <div class="cart__item__content">
+                                                <div class="cart__item__content__description">
+                                                    <h2>${product.name}</h2>
+                                                    <p>Vert</p>
+                                                    <p>42,00 €</p>
+                                                </div>
+                                                <div class="cart__item__content__settings">
+                                                    <div class="cart__item__content__settings__quantity">
+                                                    <p>Qté : </p>
+                                                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
+                                                    </div>
+                                                    <div class="cart__item__content__settings__delete">
+                                                    <p class="deleteItem">Supprimer</p>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                            </article>`
+        })
+    }
+    // console.log(alreadyInCart);
+}
+displayCart();
