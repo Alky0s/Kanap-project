@@ -25,8 +25,13 @@ fetch("http://localhost:3000/api/products/" + productId)
       ".item__img"
     ).innerHTML = `<img src="${productImageUrl}" alt="${productImageAlt}">`;
 
-    let addToCart = document.getElementById("addToCart");
+    // Getting price
+    const productPrice = parseInt(jsonProduct.price);
 
+    // Getting button to add a product to cart
+    let addToCart = document.getElementById("addToCart");
+    
+    // When I click...
     addToCart.addEventListener("click", () => {
       // Get quantity value to the DOM
       const getProductQuantity = document.getElementById("quantity");
@@ -35,6 +40,7 @@ fetch("http://localhost:3000/api/products/" + productId)
       // Get color value to the DOM
       const colorValue = document.getElementById("colors");
       const productColor = colorValue.value;
+
       // Constant name changing
       const productName = jsonProduct.name;
   
@@ -44,13 +50,15 @@ fetch("http://localhost:3000/api/products/" + productId)
         id: productId,
         quantity: productQuantity,
         color: productColor,
+        image : productImageUrl,
+        alt : productImageAlt,
+        price : productPrice
       };
 
       //  Add total quantity to local storage
       let productNumbers = localStorage.getItem("cartNumbers");
       productNumbers = parseInt(productNumbers);
 
-      // console.log(productNumbers);
       if (productNumbers) {
         localStorage.setItem(
           "cartNumbers",
@@ -71,42 +79,59 @@ fetch("http://localhost:3000/api/products/" + productId)
         ) {
           alert ("Please select a color/quantity"); /* return ? */
         } 
-          else {
-            if (alreadyInCart == null) {
-              alreadyInCart = [];
-              alreadyInCart.push(productArray);
-              localStorage.setItem(
-                "productsInCart",
-                JSON.stringify(alreadyInCart)
-              );
-          } else if (alreadyInCart != null) {
-              for (let i = 0; i < alreadyInCart.length; i++) {
-                if (
-                  alreadyInCart[i]["id"] === productId &&
-                  alreadyInCart[i]["color"] === productColor
-                ) { 
-                  return alreadyInCart[i]["quantity"] += productQuantity,
-                  localStorage.setItem(
-                    "productsInCart",
-                    JSON.stringify(alreadyInCart)
-                  );
-                }
-              }
-              
-              for (let i = 0; i < alreadyInCart.length; i++) {
-                if (
-                  alreadyInCart[i]["id"] === productId &&
-                  alreadyInCart[i]["color"] != productColor || alreadyInCart[i]["id"] != productId
-                ) { 
-                  return (alreadyInCart.push(productArray)),
-                  localStorage.setItem(
-                    "productsInCart",
-                    JSON.stringify(alreadyInCart)
-                  );
-                }
+        // If there's nothing in the cart
+        else {
+          if (alreadyInCart == null) {
+            alreadyInCart = [];
+            alreadyInCart.push(productArray);
+            localStorage.setItem(
+              "productsInCart",
+              JSON.stringify(alreadyInCart)
+            );
+            // If there's something in, same id and color
+        } else if (alreadyInCart != null) {
+            for (let i = 0; i < alreadyInCart.length; i++) {
+              if (
+                alreadyInCart[i]["id"] === productId &&
+                alreadyInCart[i]["color"] === productColor
+              ) { 
+                return alreadyInCart[i]["quantity"] += productQuantity,
+                localStorage.setItem(
+                  "productsInCart",
+                  JSON.stringify(alreadyInCart)
+                );
               }
             }
+            
+            // If there's something in, different id and color
+            for (let i = 0; i < alreadyInCart.length; i++) {
+              if (
+                alreadyInCart[i]["id"] === productId &&
+                alreadyInCart[i]["color"] != productColor || alreadyInCart[i]["id"] != productId
+              ) { 
+                return (alreadyInCart.push(productArray)),
+                localStorage.setItem(
+                  "productsInCart",
+                  JSON.stringify(alreadyInCart)
+                );
+              }
+            }
+          }
+       }
+       //  Add total price to local storage
+      let cartCost = localStorage.getItem("totalCost");
+       console.log('my product price is', cartCost);
+      if (cartCost == null) {
+        localStorage.setItem("totalCost", productPrice);
+        console.log('my product price is', cartCost);
+      } else {
+        cartCost = parseInt(cartCost);
+        localStorage.setItem(
+          "totalCost",
+          cartCost + productPrice
+        );
       }
+        console.log('my total cost is', cartCost); 
     });
   });
       
