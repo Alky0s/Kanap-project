@@ -33,6 +33,7 @@ fetch("http://localhost:3000/api/products/" + productId)
     
     // When I click...
     addToCart.addEventListener("click", () => {
+
       // Get quantity value to the DOM
       const getProductQuantity = document.getElementById("quantity");
       const productQuantity = parseInt(getProductQuantity.value);
@@ -68,7 +69,7 @@ fetch("http://localhost:3000/api/products/" + productId)
         localStorage.setItem("cartNumbers", productQuantity);
       }
      
-        //  Check if there is something in Local storage
+      //  Check if there is something in Local storage
       let alreadyInCart = JSON.parse(localStorage.getItem("productsInCart"));
 
       // Check if color and quantity are selected
@@ -119,19 +120,19 @@ fetch("http://localhost:3000/api/products/" + productId)
           }
        }
        //  Add total price to local storage
-      let cartCost = localStorage.getItem("totalCost");
-       console.log('my product price is', cartCost);
-      if (cartCost == null) {
-        localStorage.setItem("totalCost", productPrice);
-        console.log('my product price is', cartCost);
-      } else {
-        cartCost = parseInt(cartCost);
-        localStorage.setItem(
-          "totalCost",
-          cartCost + productPrice
-        );
-      }
-        console.log('my total cost is', cartCost); 
+      // let cartCost = localStorage.getItem("totalCost");
+      //  console.log('my product price is', cartCost);
+      // if (cartCost == null) {
+      //   localStorage.setItem("totalCost", productPrice);
+      //   console.log('my product price is', cartCost);
+      // } else {
+      //   cartCost = parseInt(cartCost);
+      //   localStorage.setItem(
+      //     "totalCost",
+      //     cartCost + productPrice
+      //   );
+      // }
+      //   console.log('my total cost is', cartCost); 
     });
   });
       
