@@ -82,7 +82,7 @@ fetch("http://localhost:3000/api/products/" + productId)
         } 
         // If there's nothing in the cart
         else {
-          if (alreadyInCart == null) {
+          if (alreadyInCart == null || alreadyInCart.length === 0) {
             alreadyInCart = [];
             alreadyInCart.push(productArray);
             localStorage.setItem(
@@ -119,7 +119,7 @@ fetch("http://localhost:3000/api/products/" + productId)
             }
           }
        }
-       //  Add total price to local storage
+       
       // let cartCost = localStorage.getItem("totalCost");
       //  console.log('my product price is', cartCost);
       // if (cartCost == null) {

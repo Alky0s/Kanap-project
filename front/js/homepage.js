@@ -11,7 +11,6 @@ fetch('http://localhost:3000/api/products')
                                                                 <p class="productDescription">${item.description}</p>
                                                             </article>
                                                         </a>`;
-                                                        console.log(item._id);
                                                                                     
         }
     });
