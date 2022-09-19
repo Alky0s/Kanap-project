@@ -119,20 +119,6 @@ fetch("http://localhost:3000/api/products/" + productId)
             }
           }
        }
-       
-      // let cartCost = localStorage.getItem("totalCost");
-      //  console.log('my product price is', cartCost);
-      // if (cartCost == null) {
-      //   localStorage.setItem("totalCost", productPrice);
-      //   console.log('my product price is', cartCost);
-      // } else {
-      //   cartCost = parseInt(cartCost);
-      //   localStorage.setItem(
-      //     "totalCost",
-      //     cartCost + productPrice
-      //   );
-      // }
-      //   console.log('my total cost is', cartCost); 
     });
   });
       
