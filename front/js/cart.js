@@ -106,3 +106,51 @@ function displayCart () {
 }       
 displayCart();
 
+
+// 1/ AddEventListener
+let getOrderButton = document.getElementById('order');
+getOrderButton.addEventListener('click', (e) => {
+    e.preventDefault;
+    // Get form values from DOM
+    const formValues = {
+        firstName : document.getElementById('firstName').value,
+        lastName : document.getElementById('lastName').value,
+        address : document.getElementById('address').value,
+        city : document.getElementById('city').value,
+        email : document.getElementById('email').value
+    }
+    
+    alreadyInCart = JSON.parse(localStorage.getItem('productsInCart'));
+    
+    console.log(typeof alreadyInCart);
+    localStorage.setItem('contact', JSON.stringify(formValues));
+
+    const orderInfo = {
+        contact : {
+          firstName : formValues.firstName,
+          lastName : formValues.lastName,
+          address : formValues.address,
+          city : formValues.city,
+          email : formValues.email
+        },
+        products : getIdsFromCart ()
+      }
+    console.log(orderInfo);
+    
+    const sendToOrder = fetch ("http://localhost:3000/api/products/order", {
+            method : "POST",
+            body : JSON.stringify(orderInfo),
+            headers : {
+                "Content-Type": "application/json"
+            },
+    });
+})
+
+function getIdsFromCart () {
+    const ids = [];
+    for (let i = 0; i < alreadyInCart.length; i ++) {
+        const alreadyInCartId = alreadyInCart[i]["id"];
+        ids.push(alreadyInCartId);
+    }
+    return ids
+}
