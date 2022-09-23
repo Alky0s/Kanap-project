@@ -30,7 +30,6 @@ function displayCart () {
                                             </article>`  
         }) 
     }  
-
     // Delete a product from localStorage
     let removeItem = document.getElementsByClassName('deleteItem');
         
@@ -110,7 +109,7 @@ displayCart();
 // 1/ AddEventListener
 let getOrderButton = document.getElementById('order');
 getOrderButton.addEventListener('click', (e) => {
-    e.preventDefault;
+    e.preventDefault();
     // Get form values from DOM
     const formValues = {
         firstName : document.getElementById('firstName').value,
@@ -122,9 +121,73 @@ getOrderButton.addEventListener('click', (e) => {
     
     alreadyInCart = JSON.parse(localStorage.getItem('productsInCart'));
     
-    console.log(typeof alreadyInCart);
-    localStorage.setItem('contact', JSON.stringify(formValues));
+    // Check if each form field is valid
+    const regExTextFields = (value) => {
+        return /^[A-Za-z]{3,20}$/.test(value);
+    }
+    function firstNameControl() {
+        if (regExTextFields(formValues.firstName)) {
+            console.log("ok");
+            return true;
+            } else {
+            console.log("ko");
+            alert ("La saisie du prénom est incorrecte ou manquante")
+            return false;
+            }
+    }
+    
+    function lastNameControl() {
+        if (regExTextFields(formValues.lastName)) {
+            console.log("ok");
+            return true;
+            } else {
+            console.log("ko");
+            alert ("La saisie du nom est incorrecte ou manquante")
+            return false;
+            }
+    }
 
+    function cityControl() {
+        if (regExTextFields(formValues.city)) {
+            console.log("ok");
+            return true;
+            } else {
+            console.log("ko");
+            alert ("La saisie de la ville est incorrecte ou manquante")
+            return false;
+            }
+    }
+
+    function addressControl() {
+        if (/^[a-zA-Z0-9\s,'-]*$/.test(formValues.address)) {
+            console.log("ok");
+            return true;
+            } else {
+            console.log("ko");
+            alert ("La saisie de l'adresse est invalide ou manquante")
+            return false;
+            }
+    }
+
+    function emailControl() {
+        if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
+            console.log("ok");
+            return true;
+            } else {
+            console.log("ko");
+            alert ("L'adresse mail n'est pas valide ou manquante")
+            return false;
+            }
+    }
+    
+    // Check if the form is valid
+    if (firstNameControl() && lastNameControl() && cityControl() && addressControl() && emailControl()) {
+        localStorage.setItem('contact', JSON.stringify(formValues));
+    } else {
+        return 
+    }
+ 
+    // Body for POST request
     const orderInfo = {
         contact : {
           firstName : formValues.firstName,
@@ -135,8 +198,8 @@ getOrderButton.addEventListener('click', (e) => {
         },
         products : getIdsFromCart ()
       }
-    console.log(orderInfo);
-    
+
+    // Send order with POST request
     const sendToOrder = fetch ("http://localhost:3000/api/products/order", {
             method : "POST",
             body : JSON.stringify(orderInfo),
@@ -144,7 +207,17 @@ getOrderButton.addEventListener('click', (e) => {
                 "Content-Type": "application/json"
             },
     });
-})
+
+    sendToOrder.then(async(response)=> {
+        try {
+            const formInfo = await response.json();
+        } catch(e) {
+            console.log('e');
+            console.log(e);
+        }
+    })
+  
+});
 
 function getIdsFromCart () {
     const ids = [];
