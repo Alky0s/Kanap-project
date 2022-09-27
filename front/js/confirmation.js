@@ -1,3 +1,6 @@
-const getOrderId = localStorage.getItem('orderId');
-console.log(getOrderId);
-document.getElementById('orderId').innerHTML = `${getOrderId}`;
+function confirmationPage () {
+    const getOrderId = localStorage.getItem('orderId');
+    document.getElementById('orderId').innerHTML = `${getOrderId}`;
+    localStorage.clear();
+}
+confirmationPage();
