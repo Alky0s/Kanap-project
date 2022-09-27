@@ -118,71 +118,66 @@ getOrderButton.addEventListener('click', (e) => {
         city : document.getElementById('city').value,
         email : document.getElementById('email').value
     }
-    
+    console.log('mes coordonnées', formValues);
     alreadyInCart = JSON.parse(localStorage.getItem('productsInCart'));
     
     // Check if each form field is valid
     const regExTextFields = (value) => {
-        return /^[A-Za-z]{3,20}$/.test(value);
+        return /^[a-zA-Zàâéèëêïîôùüç -]{3,20}$/.test(value);
     }
     function firstNameControl() {
         if (regExTextFields(formValues.firstName)) {
-            console.log("ok");
+            document.getElementById('firstNameErrorMsg').textContent =  "";
             return true;
             } else {
-            console.log("ko");
-            alert ("La saisie du prénom est incorrecte ou manquante")
+            document.getElementById('firstNameErrorMsg').textContent =  "La saisie du prénom est incorrecte ou manquante"
             return false;
-            }
+            } 
     }
     
     function lastNameControl() {
         if (regExTextFields(formValues.lastName)) {
-            console.log("ok");
+            document.getElementById('lastNameErrorMsg').textContent =  "";
             return true;
             } else {
-            console.log("ko");
-            alert ("La saisie du nom est incorrecte ou manquante")
-            return false;
-            }
-    }
-
-    function cityControl() {
-        if (regExTextFields(formValues.city)) {
-            console.log("ok");
-            return true;
-            } else {
-            console.log("ko");
-            alert ("La saisie de la ville est incorrecte ou manquante")
+            document.getElementById('lastNameErrorMsg').textContent = "La saisie du nom est incorrecte ou manquante"
             return false;
             }
     }
 
     function addressControl() {
-        if (/^[a-zA-Z0-9\s,'-]*$/.test(formValues.address)) {
-            console.log("ok");
+        if (/^([0-9a-z'àâéèêôùûçÀÂÉÈÔÙÛÇ\s-]{8,50})$/.test(formValues.address)) {
+            document.getElementById('addressErrorMsg').textContent =  "";
             return true;
             } else {
-            console.log("ko");
-            alert ("La saisie de l'adresse est invalide ou manquante")
+            document.getElementById('addressErrorMsg').textContent = "La saisie de l'adresse est invalide ou manquante"
+            return false;
+            }
+    }
+    function cityControl() {
+        if (regExTextFields(formValues.city)) {
+            document.getElementById('cityErrorMsg').textContent =  "";
+            return true;
+            } else {
+            document.getElementById('cityErrorMsg').textContent = "La saisie de la ville est incorrecte ou manquante"
             return false;
             }
     }
 
     function emailControl() {
         if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
-            console.log("ok");
+            document.getElementById('emailErrorMsg').textContent =  "";
             return true;
             } else {
-            console.log("ko");
-            alert ("L'adresse mail n'est pas valide ou manquante")
+            document.getElementById('emailErrorMsg').textContent = "L'adresse mail n'est pas valide ou manquante"
             return false;
             }
     }
     
     // Check if the form is valid
-    if (firstNameControl() && lastNameControl() && cityControl() && addressControl() && emailControl()) {
+    if (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()) {
         localStorage.setItem('contact', JSON.stringify(formValues));
+        // window.location.href = "cart.html";
     } else {
         return 
     }
@@ -210,13 +205,17 @@ getOrderButton.addEventListener('click', (e) => {
 
     sendToOrder.then(async(response)=> {
         try {
+            console.log(response);
             const formInfo = await response.json();
+            const orderId = formInfo.orderId;
+            localStorage.setItem('orderId', JSON.stringify(orderId));
+            console.log(formInfo);
         } catch(e) {
             console.log('e');
             console.log(e);
         }
     })
-  
+    window.location.href = "confirmation.html";
 });
 
 function getIdsFromCart () {
