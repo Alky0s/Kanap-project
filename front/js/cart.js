@@ -209,13 +209,13 @@ getOrderButton.addEventListener('click', (e) => {
             const formInfo = await response.json();
             const orderId = formInfo.orderId;
             localStorage.setItem('orderId', JSON.stringify(orderId));
+            window.location.href = "confirmation.html";
             console.log(formInfo);
         } catch(e) {
             console.log('e');
             console.log(e);
         }
     })
-    window.location.href = "confirmation.html";
 });
 
 function getIdsFromCart () {
