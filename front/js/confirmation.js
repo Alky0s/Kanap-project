@@ -1,6 +1,11 @@
-function confirmationPage () {
-    const getOrderId = localStorage.getItem('orderId');
-    document.getElementById('orderId').innerHTML = `${getOrderId}`;
+const orderId = getOrderId();
+confirmationPage(orderId);
+
+function getOrderId() {
+    return new URL(window.location.href).searchParams.get("orderId");
+}
+function confirmationPage (orderId) {
+    document.getElementById('orderId').textContent = orderId;
     localStorage.clear();
 }
-confirmationPage();
+    

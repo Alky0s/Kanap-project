@@ -1,4 +1,4 @@
-function displayCart () {
+function displayCart() {
     let alreadyInCart = localStorage.getItem('productsInCart');
     alreadyInCart = JSON.parse(alreadyInCart);
     let productContainer = document.getElementById('cart__items');
@@ -188,8 +188,8 @@ getOrderButton.addEventListener('click', (e) => {
         try {
             const formInfo = await response.json();
             const orderId = formInfo.orderId;
-            localStorage.setItem('orderId', JSON.stringify(orderId));
-            window.location.href = "confirmation.html";
+            // localStorage.setItem('orderId', JSON.stringify(orderId));
+            window.location.href = "confirmation.html" + "?orderId=" + orderId;
         } catch(e) {
             console.log('e');
             console.log(e);
