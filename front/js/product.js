@@ -59,11 +59,13 @@ fetch("http://localhost:3000/api/products/" + productId)
             setProductsInCart(productArray, productColor, productQuantity, alreadyInCart);
         });
     });
-      
+
+// Get the product id in the URL      
 function getProductId() {
     return new URL(window.location.href).searchParams.get("id");
 }
 
+// How to set products in cart
 function setProductsInCart(productArray, productColor, productQuantity, alreadyInCart) {
     // Check if color and quantity are selected
     if (productColor == null || productColor === "" || productQuantity === 0) {
@@ -79,17 +81,17 @@ function setProductsInCart(productArray, productColor, productQuantity, alreadyI
         // If there's something in, same id and color
         else if (alreadyInCart != null) {
             for (let i = 0; i < alreadyInCart.length; i++) {
-            if (alreadyInCart[i]["id"] === productId && alreadyInCart[i]["color"] === productColor) { 
-                return alreadyInCart[i]["quantity"] += productQuantity,
-                localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
-            }
+                if (alreadyInCart[i]["id"] === productId && alreadyInCart[i]["color"] === productColor) { 
+                    return alreadyInCart[i]["quantity"] += productQuantity,
+                    localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
+                }
             }
             // If there's something in, different id and color
             for (let i = 0; i < alreadyInCart.length; i++) {
-            if (alreadyInCart[i]["id"] === productId && alreadyInCart[i]["color"] != productColor || alreadyInCart[i]["id"] != productId) { 
-                return (alreadyInCart.push(productArray)),
-                localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
-            }
+                if (alreadyInCart[i]["id"] === productId && alreadyInCart[i]["color"] != productColor || alreadyInCart[i]["id"] != productId) { 
+                    return (alreadyInCart.push(productArray)),
+                    localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
+                }
             }
         }
     }

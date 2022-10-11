@@ -1,8 +1,9 @@
+// Products display in the cart
 function displayCart() {
     let alreadyInCart = localStorage.getItem("productsInCart");
     alreadyInCart = JSON.parse(alreadyInCart);
     let productContainer = document.getElementById("cart__items");
-    
+    // Display products features from localstorage
     if (alreadyInCart && productContainer) {
         productContainer.innerHTML = ``;
         Object.values(alreadyInCart).map(product => {
@@ -181,7 +182,7 @@ getOrderButton.addEventListener("click", (e) => {
         }
     })
 });
-
+// Get products features from localstorage for POST request
 function getIdsFromCart () {
     const ids = [];
     for (let i = 0; i < alreadyInCart.length; i ++) {
@@ -190,7 +191,7 @@ function getIdsFromCart () {
     }
     return ids
 }
-
+// Delete a product 
 function removeProduct(removeItem) {
     for (let i = 0; i < removeItem.length; i++) {
         removeItem[i].addEventListener("click", () => {
