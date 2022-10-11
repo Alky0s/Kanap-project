@@ -1,7 +1,7 @@
 function displayCart() {
-    let alreadyInCart = localStorage.getItem('productsInCart');
+    let alreadyInCart = localStorage.getItem("productsInCart");
     alreadyInCart = JSON.parse(alreadyInCart);
-    let productContainer = document.getElementById('cart__items');
+    let productContainer = document.getElementById("cart__items");
     
     if (alreadyInCart && productContainer) {
         productContainer.innerHTML = ``;
@@ -31,7 +31,7 @@ function displayCart() {
     }  
 
     // Delete a product from localStorage
-    let removeItem = document.getElementsByClassName('deleteItem');
+    let removeItem = document.getElementsByClassName("deleteItem");
     removeProduct(removeItem);
        
     // Add total price to local storage
@@ -65,8 +65,8 @@ function displayCart() {
     const getTotalQuantity = document.getElementById("totalQuantity").innerHTML += `${totalQuantity}`;     
     
     // Update price and quantity
-    let inputQuantities = document.querySelectorAll('.itemQuantity');
-    alreadyInCart = JSON.parse(localStorage.getItem('productsInCart'));
+    let inputQuantities = document.querySelectorAll(".itemQuantity");
+    alreadyInCart = JSON.parse(localStorage.getItem("productsInCart"));
 
     inputQuantities.forEach(inputQuantity => {
         inputQuantity.addEventListener("change", (e) => {
@@ -83,70 +83,70 @@ function displayCart() {
 displayCart();
 
 // Order button AddEventListener
-let getOrderButton = document.getElementById('order');
-getOrderButton.addEventListener('click', (e) => {
+let getOrderButton = document.getElementById("order");
+getOrderButton.addEventListener("click", (e) => {
     e.preventDefault();
     // Get form values from DOM
     const formValues = {
-        firstName : document.getElementById('firstName').value,
-        lastName : document.getElementById('lastName').value,
-        address : document.getElementById('address').value,
-        city : document.getElementById('city').value,
-        email : document.getElementById('email').value
+        firstName : document.getElementById("firstName").value,
+        lastName : document.getElementById("lastName").value,
+        address : document.getElementById("address").value,
+        city : document.getElementById("city").value,
+        email : document.getElementById("email").value
     }
-    alreadyInCart = JSON.parse(localStorage.getItem('productsInCart'));
+    alreadyInCart = JSON.parse(localStorage.getItem("productsInCart"));
     // Check if each form field is valid
     const regExTextFields = (value) => {
         return /^[a-zA-Zàâéèëêïîôùüç -]{3,20}$/.test(value);
     }
     function firstNameControl() {
         if (regExTextFields(formValues.firstName)) {
-            document.getElementById('firstNameErrorMsg').textContent =  "";
+            document.getElementById("firstNameErrorMsg").textContent =  "";
             return true;
         } else {
-            document.getElementById('firstNameErrorMsg').textContent =  "La saisie du prénom est incorrecte ou manquante"
+            document.getElementById("firstNameErrorMsg").textContent =  "La saisie du prénom est incorrecte ou manquante"
             return false;
         } 
     }
     function lastNameControl() {
         if (regExTextFields(formValues.lastName)) {
-            document.getElementById('lastNameErrorMsg').textContent =  "";
+            document.getElementById("lastNameErrorMsg").textContent =  "";
             return true;
         } else {
-            document.getElementById('lastNameErrorMsg').textContent = "La saisie du nom est incorrecte ou manquante"
+            document.getElementById("lastNameErrorMsg").textContent = "La saisie du nom est incorrecte ou manquante"
             return false;
         }
     }
     function addressControl() {
         if (/^([0-9a-z'àâéèêôùûçÀÂÉÈÔÙÛÇ\s-]{8,50})$/.test(formValues.address)) {
-            document.getElementById('addressErrorMsg').textContent =  "";
+            document.getElementById("addressErrorMsg").textContent =  "";
             return true;
         } else {
-            document.getElementById('addressErrorMsg').textContent = "La saisie de l'adresse est invalide ou manquante"
+            document.getElementById("addressErrorMsg").textContent = "La saisie de l'adresse est invalide ou manquante"
             return false;
         }
     }
     function cityControl() {
         if (regExTextFields(formValues.city)) {
-            document.getElementById('cityErrorMsg').textContent =  "";
+            document.getElementById("cityErrorMsg").textContent =  "";
             return true;
         } else {
-            document.getElementById('cityErrorMsg').textContent = "La saisie de la ville est incorrecte ou manquante"
+            document.getElementById("cityErrorMsg").textContent = "La saisie de la ville est incorrecte ou manquante"
             return false;
         }
     }
     function emailControl() {
         if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(formValues.email)) {
-            document.getElementById('emailErrorMsg').textContent =  "";
+            document.getElementById("emailErrorMsg").textContent =  "";
             return true;
         } else {
-            document.getElementById('emailErrorMsg').textContent = "L'adresse mail n'est pas valide ou manquante"
+            document.getElementById("emailErrorMsg").textContent = "L'adresse mail n'est pas valide ou manquante"
             return false;
         }
     }
     // Check if the form is valid
     if (firstNameControl() && lastNameControl() && addressControl() && cityControl() && emailControl()) {
-        localStorage.setItem('contact', JSON.stringify(formValues));
+        localStorage.setItem("contact", JSON.stringify(formValues));
     } else {
         return 
     }
@@ -176,7 +176,7 @@ getOrderButton.addEventListener('click', (e) => {
             const orderId = formInfo.orderId;
             window.location.href = "confirmation.html" + "?orderId=" + orderId;
         } catch(e) {
-            console.log('Erreur');
+            console.log("Erreur");
             console.log(e);
         }
     })
@@ -193,8 +193,8 @@ function getIdsFromCart () {
 
 function removeProduct(removeItem) {
     for (let i = 0; i < removeItem.length; i++) {
-        removeItem[i].addEventListener('click', () => {
-            let alreadyInCart = localStorage.getItem('productsInCart');
+        removeItem[i].addEventListener("click", () => {
+            let alreadyInCart = localStorage.getItem("productsInCart");
             alreadyInCart = JSON.parse(alreadyInCart);
             let removeSelect = alreadyInCart[i];
             alreadyInCart = alreadyInCart.filter(product => (product.id != removeSelect.id && product.color != removeSelect.color) || (product.id == removeSelect.id && product.color != removeSelect.color) || (product.id != removeSelect.id && product.color == removeSelect.color));
