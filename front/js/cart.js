@@ -3,84 +3,99 @@ function displayCart() {
     let alreadyInCart = localStorage.getItem("productsInCart");
     alreadyInCart = JSON.parse(alreadyInCart);
     let productContainer = document.getElementById("cart__items");
-    // Display products features from localstorage
     if (alreadyInCart && productContainer) {
         productContainer.innerHTML = ``;
-        Object.values(alreadyInCart).map(product => {
-            productContainer.innerHTML += `<article class="cart__item" data-id="${product.id}" data-color="${product.color}">
-                                                <div class="cart__item__img">
-                                                    <img src="${product.image}" alt="${product.alt}">
-                                                </div>
-                                                <div class="cart__item__content">
-                                                    <div class="cart__item__content__description">
-                                                        <h2>${product.name}</h2>
-                                                        <p>${product.color}</p>
-                                                        <p>${product.price}€</p>
-                                                    </div>
-                                                    <div class="cart__item__content__settings">
-                                                        <div class="cart__item__content__settings__quantity">
-                                                            <p>Qté : </p>
-                                                            <input type="number" data-id="${product.id}" data-color="${product.color}" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
+        for (let i = 0; i < alreadyInCart.length; i ++) {
+            fetch(`http://localhost:3000/api/products/${alreadyInCart[i].id}`) 
+                .then((res)=> { 
+                    return res.json()
+                })
+                .then((data)=> {
+                    productContainer.innerHTML += `<article class="cart__item" data-id="${alreadyInCart[i].id}" data-color="${alreadyInCart[i].color}">
+                                                        <div class="cart__item__img">
+                                                            <img src="${data.imageUrl}" alt="${data.altTxt}">
                                                         </div>
-                                                        <div class="cart__item__content__settings__delete">
-                                                            <p class="deleteItem">Supprimer</p>
+                                                        <div class="cart__item__content">
+                                                            <div class="cart__item__content__description">
+                                                                <h2>${data.name}</h2>
+                                                                <p>${alreadyInCart[i].color}</p>
+                                                                <p>${data.price}€</p>
+                                                            </div>
+                                                            <div class="cart__item__content__settings">
+                                                                <div class="cart__item__content__settings__quantity">
+                                                                    <p>Qté : </p>
+                                                                    <input type="number" data-id="${alreadyInCart[i].id}" data-color="${alreadyInCart[i].color}" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${alreadyInCart[i].quantity}">
+                                                                </div>
+                                                                <div class="cart__item__content__settings__delete">
+                                                                    <p class="deleteItem">Supprimer</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </article>`  
-        }) 
-    }  
+                                                    </article>`
 
-    // Delete a product from localStorage
-    let removeItem = document.getElementsByClassName("deleteItem");
-    removeProduct(removeItem);
-       
-    // Add total price to local storage
-    let totalPriceArray = [];
-
-    for (let i = 0; i < alreadyInCart.length; i ++) {
-        let priceProduct = alreadyInCart[i].price * alreadyInCart[i].quantity;
-        //Add each "priceProduct" to the array "totalPriceArray"
-        totalPriceArray.push(priceProduct);
+                    // Delete a product from localStorage
+                    let removeItem = document.getElementsByClassName("deleteItem");
+                    removeProduct(removeItem);
+                })  
+        } 
     }
-
-    //  // Sum of all product prices
-    const price = (accumulator, currentValue) => accumulator + currentValue;
-    const totalPrice = totalPriceArray.reduce(price, 0);
-   
-    //  Put totalPrice to the DOM 
-    const getTotalPrice = document.getElementById("totalPrice").innerHTML += `${totalPrice}`;
-
-    //   Put quantity to the DOM
-    let totalQuantityArray = [];
-
-    for (let i = 0; i < alreadyInCart.length; i ++) {
-        let quantityProduct = alreadyInCart[i].quantity;
-        //Add each "quantityProduct" to the array "totalQuantityArray"
-        totalQuantityArray.push(quantityProduct);
-    }
-
-    //  // Sum of all product quantities
-    const quantity = (accumulator, currentValue) => accumulator + currentValue;
-    const totalQuantity = totalQuantityArray.reduce(quantity, 0);
-    const getTotalQuantity = document.getElementById("totalQuantity").innerHTML += `${totalQuantity}`;     
     
-    // Update price and quantity
-    let inputQuantities = document.querySelectorAll(".itemQuantity");
-    alreadyInCart = JSON.parse(localStorage.getItem("productsInCart"));
+    // Add total price to local storage
+    if (alreadyInCart && productContainer) {
+        let totalPriceArray = [];
+        for (let i = 0; i < alreadyInCart.length; i ++) {
+            fetch (`http://localhost:3000/api/products/${alreadyInCart[i].id}`) 
+                .then((res)=> { 
+                    return res.json()
+                })
+                .then((data) => {
+                    let priceProduct = data.price * alreadyInCart[i].quantity;
+                    //Add each "priceProduct" to the array "totalPriceArray"
+                    totalPriceArray.push(priceProduct);
+                    //  // Sum of all product prices
+                    const price = (accumulator, currentValue) => accumulator + currentValue;
+                    const totalPrice = totalPriceArray.reduce(price, 0);
+                    //  Put totalPrice to the DOM 
+                    const getTotalPrice = document.getElementById("totalPrice").innerHTML = `${totalPrice}`;
 
-    inputQuantities.forEach(inputQuantity => {
-        inputQuantity.addEventListener("change", (e) => {
-            for (article of alreadyInCart) {
-                if (article.id === inputQuantity.dataset.id && article.color === inputQuantity.dataset.color) {
-                    article.quantity = parseInt(e.target.value);
-                    localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
-                    window.location.href = "cart.html";
-                }
-            }
-        }); 
-    })    
-}       
+                    //   Put quantity to the DOM
+                    let totalQuantityArray = [];
+
+                    for (let i = 0; i < alreadyInCart.length; i ++) {
+                        let quantityProduct = alreadyInCart[i].quantity;
+                        //Add each "quantityProduct" to the array "totalQuantityArray"
+                        totalQuantityArray.push(quantityProduct);
+                    }
+        
+                    //  // Sum of all product quantities
+                    const quantity = (accumulator, currentValue) => accumulator + currentValue;
+                    const totalQuantity = totalQuantityArray.reduce(quantity, 0);
+                    const getTotalQuantity = document.getElementById("totalQuantity").innerHTML = `${totalQuantity}`;
+                })
+        }  
+    };
+
+    // Update price and quantity
+    fetch ("http://localhost:3000/api/products/") 
+        .then((res)=> { 
+            return res.json()
+        })
+        .then((data) => {
+            alreadyInCart = JSON.parse(localStorage.getItem("productsInCart"));
+            let inputQuantities = document.querySelectorAll(".itemQuantity");
+            inputQuantities.forEach(inputQuantity => {    
+                inputQuantity.addEventListener("change", (e) => {
+                    for (article of alreadyInCart) {
+                        if (article.id === inputQuantity.dataset.id && article.color === inputQuantity.dataset.color) {
+                            article.quantity = parseInt(e.target.value);
+                            localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
+                            window.location.href = "cart.html";
+                        }
+                    }
+                }); 
+            }) 
+        })  
+}    
 displayCart();
 
 // Order button AddEventListener
@@ -205,4 +220,5 @@ function removeProduct(removeItem) {
         });     
     } 
 }
+
 

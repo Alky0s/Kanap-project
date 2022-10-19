@@ -9,7 +9,6 @@ fetch("http://localhost:3000/api/products")
                                                                 <h3 class="productName">${item.name}</h3>
                                                                 <p class="productDescription">${item.description}</p>
                                                             </article>
-                                                        </a>`;
-                                                                                    
+                                                        </a>`;                                                                       
         }
     });

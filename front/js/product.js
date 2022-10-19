@@ -32,10 +32,7 @@ fetch("http://localhost:3000/api/products/" + productId)
         addToCart.addEventListener("click", () => {
 
             // Get quantity value to the DOM
-            const productQuantity = parseInt(document.getElementById("quantity").value);
-            
-            // const productQuantity = parseInt(getProductQuantity.value);
-
+            const productQuantity = document.getElementById("quantity").value;
             // Get color value to the DOM
             const colorValue = document.getElementById("colors");
             const productColor = colorValue.value;
@@ -45,13 +42,12 @@ fetch("http://localhost:3000/api/products/" + productId)
 
             // Array creation for Local storage
             const productArray = {
-            name: productName,
-            id: productId,
-            quantity: productQuantity,
-            color: productColor,
-            image : productImageUrl,
-            alt : productImageAlt,
-            price : productPrice
+                name: productName,
+                id: productId,
+                quantity: parseInt(productQuantity),
+                color: productColor,
+                image : productImageUrl,
+                alt : productImageAlt,
             };
 
             //  Check if there is something in Local storage
@@ -68,7 +64,7 @@ function getProductId() {
 // How to set products in cart
 function setProductsInCart(productArray, productColor, productQuantity, alreadyInCart) {
     // Check if color and quantity are selected
-    if (productColor == null || productColor === "" || productQuantity === 0) {
+    if (productColor == null || productColor === "" || productQuantity <= 0){
         alert ("Please select a color/quantity"); 
     } 
     // If there's nothing in the cart
@@ -82,7 +78,7 @@ function setProductsInCart(productArray, productColor, productQuantity, alreadyI
         else if (alreadyInCart != null) {
             for (let i = 0; i < alreadyInCart.length; i++) {
                 if (alreadyInCart[i]["id"] === productId && alreadyInCart[i]["color"] === productColor) { 
-                    return alreadyInCart[i]["quantity"] += productQuantity,
+                    return alreadyInCart[i]["quantity"] += parseInt(productQuantity),
                     localStorage.setItem("productsInCart", JSON.stringify(alreadyInCart));
                 }
             }
